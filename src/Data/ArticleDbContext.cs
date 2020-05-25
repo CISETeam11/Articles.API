@@ -1,4 +1,5 @@
-﻿using Articles.API.Models;
+﻿using Articles.API.Extensions;
+using Articles.API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Articles.API.Data
@@ -9,5 +10,10 @@ namespace Articles.API.Data
         { }
 
         public DbSet<Article> Articles { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Seed();
+        }
     }
 }

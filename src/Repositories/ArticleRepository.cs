@@ -14,6 +14,8 @@ namespace Articles.API.Repositories
         public ArticleRepository(ArticleDbContext context)
         {
             _context = context;
+
+            _context?.Database.EnsureCreated();
         }
 
         public async Task<IEnumerable<Article>> GetAllAsync()
