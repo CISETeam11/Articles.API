@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Reflection;
 using Articles.API.Contracts;
 using Articles.API.Data;
 using Articles.API.Repositories;
@@ -7,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace Articles.API
 {
@@ -36,6 +40,26 @@ namespace Articles.API
                 options.SuppressAsyncSuffixInActionNames = false;
             });
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Articles API",
+                    Version = "v1"
+                });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+
+            // TODO: Specify origin and headers
+            services.AddCors(c =>  
+            {  
+                c.AddPolicy("AllowAnyOrigin", options => options.AllowAnyOrigin().AllowAnyHeader());  
+            });
+
             services.AddRouting(options =>
             {
                 options.LowercaseUrls = true;
@@ -49,8 +73,22 @@ namespace Articles.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+                c.RoutePrefix = "api";
+            });
+
+            app.UseCors("AllowAnyOrigin");
 
             app.UseRouting();
 
