@@ -29,6 +29,8 @@ namespace Articles.API
                 options.UseInMemoryDatabase("Development");
             });
 
+            services.AddResponseCaching();
+
             services.AddControllers(options =>
             {
                 options.SuppressAsyncSuffixInActionNames = false;
@@ -51,6 +53,8 @@ namespace Articles.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseResponseCaching();
 
             app.UseAuthorization();
 

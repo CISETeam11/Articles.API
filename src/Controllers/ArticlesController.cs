@@ -22,6 +22,7 @@ namespace Articles.API.Controllers
         }
 
         [HttpGet]
+        [ResponseCache(Duration = 600)]
         [ProducesResponseType(typeof(IEnumerable<Article>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetRoutesAsync()
         {
