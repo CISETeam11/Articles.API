@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using Articles.API.Contracts;
 using Articles.API.Data;
 using Articles.API.Repositories;
@@ -38,6 +39,9 @@ namespace Articles.API
             services.AddControllers(options =>
             {
                 options.SuppressAsyncSuffixInActionNames = false;
+            }).AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
 
             services.AddSwaggerGen(c =>

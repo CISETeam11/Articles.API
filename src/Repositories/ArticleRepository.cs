@@ -20,7 +20,7 @@ namespace Articles.API.Repositories
 
         public async Task<IEnumerable<Article>> GetAllAsync()
         {
-            return await _context.Articles.AsNoTracking().ToListAsync();
+            return await _context.Articles.AsNoTracking().Include(a => a.Methods).ToListAsync();
         }
     }
 }
