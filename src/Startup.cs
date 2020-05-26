@@ -39,9 +39,6 @@ namespace Articles.API
             services.AddControllers(options =>
             {
                 options.SuppressAsyncSuffixInActionNames = false;
-            }).AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
 
             services.AddSwaggerGen(c =>

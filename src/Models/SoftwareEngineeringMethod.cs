@@ -3,21 +3,21 @@ using System.Text.Json.Serialization;
 
 namespace Articles.API.Models
 {
-    public enum ArticleMethod
+    public static class ArticleMethod
     {
-        Tdd,
-        Bdd,
-        PairProgramming,
-        PlanningPoker,
-        DailyStandupMeetings,
-        StoryBoards,
-        UserStoryMapping,
-        ContinuousIntegration,
-        Retrospectives,
-        BurnDownChart,
-        RequirementsPrioritization,
-        VersionControl,
-        CodeSharing
+        public const string Tdd = "TDD";
+        public const string Bdd = "BDD";
+        public const string PairProgramming = "Pair Programming";
+        public const string PlanningPoker = "Planning Poker";
+        public const string DailyStandupMeetings = "Daily Standup Meetings";
+        public const string StoryBoards = "Story Boards";
+        public const string UserStoryMapping = "User Story Mapping";
+        public const string ContinuousIntegration = "Continuous Integration";
+        public const string Retrospectives = "Retrospectives";
+        public const string BurnDownChart = "Burn Down Chart";
+        public const string RequirementsPrioritization = "Requirements Prioritization";
+        public const string VersionControl = "Version Control";
+        public const string CodeSharing = "Code Sharing";
     }
 
     public class SoftwareEngineeringMethod
@@ -30,7 +30,6 @@ namespace Articles.API.Models
         [JsonIgnore]
         public int ArticleId { get; set; }
 
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        public ArticleMethod Method { get; set; }
+        public string Method { get; set; }
     }
 }
