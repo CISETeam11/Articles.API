@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Articles.API.Contracts;
 using Articles.API.Data;
@@ -20,7 +21,17 @@ namespace Articles.API.Repositories
 
         public async Task<IEnumerable<Article>> GetAllAsync()
         {
-            return await _context.Articles.AsNoTracking().Include(a => a.Methods).ToListAsync();
+            var articles = await _context.Articles.AsNoTracking().Include(a => a.SoftwareEngineeringMethods)
+                .Include(a => a.SoftwareEngineeringMethodologies).ToListAsync();
+
+            foreach (var article in articles)
+            {
+                article.Methods = article.SoftwareEngineeringMethods.Select(x => x.Method.ToString()).ToList();
+                article.Methodology = article.SoftwareEngineeringMethodologies.Select(x => x.Methodology.ToString())
+                    .ToList();
+            }
+
+            return articles;
         }
     }
 }

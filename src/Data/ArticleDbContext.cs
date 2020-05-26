@@ -11,6 +11,7 @@ namespace Articles.API.Data
 
         public DbSet<Article> Articles { get; set; }
         public DbSet<SoftwareEngineeringMethod> Methods { get; set; }
+        public DbSet<SoftwareEngineeringMethodology> Methodologies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

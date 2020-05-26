@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Articles.API.Models
 {
-    public enum SoftwareEngineeringTechnique
+    public enum ArticleMethod
     {
         Tdd,
         Bdd,
@@ -31,6 +31,6 @@ namespace Articles.API.Models
         public int ArticleId { get; set; }
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public SoftwareEngineeringTechnique Method { get; set; }
+        public ArticleMethod Method { get; set; }
     }
 }

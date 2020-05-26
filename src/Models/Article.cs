@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace Articles.API.Models
@@ -26,6 +27,16 @@ namespace Articles.API.Models
 
         public string Doi { get; set; }
 
-        public virtual IEnumerable<SoftwareEngineeringMethod> Methods { get; set; }
+        [JsonIgnore]
+        public virtual IEnumerable<SoftwareEngineeringMethod> SoftwareEngineeringMethods { get; set; }
+
+        [NotMapped]
+        public virtual IEnumerable<string> Methods { get; set; }
+
+        [JsonIgnore]
+        public virtual IEnumerable<SoftwareEngineeringMethodology> SoftwareEngineeringMethodologies { get; set; }
+
+        [NotMapped]
+        public virtual IEnumerable<string> Methodology { get; set; }
     }
 }

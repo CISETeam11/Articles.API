@@ -37,19 +37,40 @@ namespace Articles.API.Extensions
                 {
                     Id = 1,
                     ArticleId = 1,
-                    Method = SoftwareEngineeringTechnique.Tdd
+                    Method = ArticleMethod.Tdd
                 },
                 new SoftwareEngineeringMethod
                 {
                     Id = 2,
                     ArticleId = 1,
-                    Method = SoftwareEngineeringTechnique.ContinuousIntegration
+                    Method = ArticleMethod.ContinuousIntegration
                 },
                 new SoftwareEngineeringMethod
                 {
                     Id = 3,
                     ArticleId = 2,
-                    Method = SoftwareEngineeringTechnique.Tdd
+                    Method = ArticleMethod.Tdd
+                }
+            );
+
+            modelBuilder.Entity<SoftwareEngineeringMethodology>().HasData(
+                new SoftwareEngineeringMethodology
+                {
+                    Id = 1,
+                    ArticleId = 1,
+                    Methodology = ArticleMethodology.Agile
+                },
+                new SoftwareEngineeringMethodology
+                {
+                    Id = 2,
+                    ArticleId = 1,
+                    Methodology = ArticleMethodology.Xp
+                },
+                new SoftwareEngineeringMethodology
+                {
+                    Id = 3,
+                    ArticleId = 2,
+                    Methodology = ArticleMethodology.Agile
                 }
             );
         }
