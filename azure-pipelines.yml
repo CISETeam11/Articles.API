@@ -2,7 +2,7 @@ trigger:
   branches:
     include:
     - master
-    - development
+    - dev
 
 pool:
   vmImage: 'windows-latest'
