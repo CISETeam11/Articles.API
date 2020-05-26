@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Articles.API.Models
 {
-    public class SoftwareEngineeringMethodology
+    public class UserRating
     {
         [Key]
         [JsonIgnore]
@@ -13,6 +13,8 @@ namespace Articles.API.Models
         [JsonIgnore]
         public int ArticleId { get; set; }
 
-        public string Methodology { get; set; }
+        [Required]
+        [Range(1, 5)]
+        public int Rating { get; set; }
     }
 }

@@ -38,5 +38,12 @@ namespace Articles.API.Models
 
         [NotMapped]
         public virtual IEnumerable<string> Methodology { get; set; }
+
+        [JsonIgnore]
+        public virtual IEnumerable<UserRating> UserRatings { get; set; }
+
+        public double AverageRating { get; set; }
+
+        public int NumberOfRatings { get; set; }
     }
 }

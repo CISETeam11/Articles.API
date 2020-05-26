@@ -37,19 +37,19 @@ namespace Articles.API.Extensions
                 {
                     Id = 1,
                     ArticleId = 1,
-                    Method = ArticleMethod.Tdd
+                    Method = "TDD"
                 },
                 new SoftwareEngineeringMethod
                 {
                     Id = 2,
                     ArticleId = 1,
-                    Method = ArticleMethod.ContinuousIntegration
+                    Method = "Continuous Integration"
                 },
                 new SoftwareEngineeringMethod
                 {
                     Id = 3,
                     ArticleId = 2,
-                    Method = ArticleMethod.Tdd
+                    Method = "TDD"
                 }
             );
 
@@ -58,19 +58,40 @@ namespace Articles.API.Extensions
                 {
                     Id = 1,
                     ArticleId = 1,
-                    Methodology = ArticleMethodology.Agile
+                    Methodology = "Agile"
                 },
                 new SoftwareEngineeringMethodology
                 {
                     Id = 2,
                     ArticleId = 1,
-                    Methodology = ArticleMethodology.Xp
+                    Methodology = "XP"
                 },
                 new SoftwareEngineeringMethodology
                 {
                     Id = 3,
                     ArticleId = 2,
-                    Methodology = ArticleMethodology.Agile
+                    Methodology = "Agile"
+                }
+            );
+
+            modelBuilder.Entity<UserRating>().HasData(
+                new UserRating
+                {
+                    Id = 1,
+                    ArticleId = 1,
+                    Rating = 3
+                },
+                new UserRating
+                {
+                    Id = 2,
+                    ArticleId = 1,
+                    Rating = 2
+                },
+                new UserRating
+                {
+                    Id = 3,
+                    ArticleId = 1,
+                    Rating = 2
                 }
             );
         }
