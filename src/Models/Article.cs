@@ -8,7 +8,6 @@ namespace Articles.API.Models
     public class Article
     {
         [Key]
-        [JsonIgnore]
         public int ArticleId { get; set; }
 
         public string Author { get; set; }

@@ -20,6 +20,11 @@ namespace Articles.API.Repositories
             _context?.Database.EnsureCreated();
         }
 
+        public Task<bool> ExistsAsync(int articleId)
+        {
+            return _context.Articles.AsNoTracking().AnyAsync(x => x.ArticleId == articleId);
+        }
+
         public async Task<IEnumerable<Article>> GetAllAsync()
         {
             var articles = await _context.Articles.AsNoTracking().Include(a => a.SoftwareEngineeringMethods)
@@ -35,6 +40,12 @@ namespace Articles.API.Repositories
             }
 
             return articles;
+        }
+
+        public async Task AddUserRatingAsync(UserRating userRating)
+        {
+            await _context.UserRatings.AddAsync(userRating);
+            await _context.SaveChangesAsync();
         }
     }
 }

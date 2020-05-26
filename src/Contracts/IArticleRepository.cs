@@ -6,6 +6,8 @@ namespace Articles.API.Contracts
 {
     public interface IArticleRepository
     {
+        Task<bool> ExistsAsync(int articleId);
         Task<IEnumerable<Article>> GetAllAsync();
+        Task AddUserRatingAsync(UserRating userRating);
     }
 }
