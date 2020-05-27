@@ -58,8 +58,10 @@ namespace Articles.API.Repositories
             return IncludeArticleData(article);
         }
 
-        public async Task AddUserRatingAsync(UserRating userRating)
+        public async Task AddUserRatingAsync(int articleId, UserRating userRating)
         {
+            userRating.ArticleId = articleId;
+
             await _context.UserRatings.AddAsync(userRating);
             await _context.SaveChangesAsync();
         }

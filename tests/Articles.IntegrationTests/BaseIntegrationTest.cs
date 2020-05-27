@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Mime;
+using System.Text;
+using System.Threading.Tasks;
 using Articles.API;
 using Articles.API.Data;
 using Articles.API.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace Articles.IntegrationTests
 {
@@ -79,6 +83,14 @@ namespace Articles.IntegrationTests
                     }
                 });
             }).CreateClient();
+        }
+
+        protected static async Task<HttpResponseMessage> PostAsync(string url, object obj)
+        {
+            var json = JsonConvert.SerializeObject(obj);
+            var content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
+
+            return await Client.PostAsync(url, content);
         }
     }
 }
