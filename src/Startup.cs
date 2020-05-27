@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Text.Json.Serialization;
 using Articles.API.Contracts;
 using Articles.API.Data;
 using Articles.API.Repositories;

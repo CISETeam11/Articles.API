@@ -8,6 +8,7 @@ namespace Articles.API.Contracts
     {
         Task<bool> ExistsAsync(int articleId);
         Task<IEnumerable<Article>> GetAllAsync();
+        Task<Article> GetArticleAsync(int articleId);
         Task AddUserRatingAsync(UserRating userRating);
     }
 }

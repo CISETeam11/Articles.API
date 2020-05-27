@@ -11,7 +11,7 @@ namespace Articles.API.Extensions
                 new Article
                 {
                     ArticleId = 1,
-                    Author = "P. Runeson, M. Höst",
+                    Author = "Per Runeson, Martin Höst",
                     Title = "Guidelines for conducting and reporting case study research in software engineering",
                     Journal = "Empirical Software Engineering",
                     Year = 2008,
@@ -23,7 +23,7 @@ namespace Articles.API.Extensions
                 new Article
                 {
                     ArticleId = 2,
-                    Author = "M. F. Aniche, M. A. Gerosa",
+                    Author = "Mauricio Aniche, Marco Gerosa",
                     Title = "Most Common Mistakes in Test-Driven Development Practice: Results from an Online Survey with Developers",
                     Journal = "ieeexplore.ieee.org",
                     Year = 2010,

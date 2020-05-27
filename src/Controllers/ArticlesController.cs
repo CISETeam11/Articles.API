@@ -28,11 +28,20 @@ namespace Articles.API.Controllers
         }
 
         [HttpGet]
-        //[ResponseCache(Duration = 600)]
         [ProducesResponseType(typeof(IEnumerable<Article>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetArticlesAsync()
+        public async Task<IActionResult> GetAllArticlesAsync()
         {
             return Ok(await _articleRepository.GetAllAsync());
+        }
+
+        [HttpGet("{articleId}")]
+        [ProducesResponseType(typeof(Article), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetArticleAsync(int articleId)
+        {
+            if (!await ArticleExistsAsync(articleId))
+                return NotFound();
+
+            return Ok(await _articleRepository.GetArticleAsync(articleId));
         }
 
         [HttpPost("{articleId}/userRating")]
@@ -51,7 +60,7 @@ namespace Articles.API.Controllers
             await _articleRepository.AddUserRatingAsync(userRating);
 
             return CreatedAtAction(
-                nameof(GetArticlesAsync),
+                nameof(GetArticleAsync),
                 new {articleId},
                 userRating
             );
