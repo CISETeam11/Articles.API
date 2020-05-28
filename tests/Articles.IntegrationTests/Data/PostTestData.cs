@@ -25,6 +25,16 @@ namespace Articles.IntegrationTests.Data
                     Rating = 5
                 }
             };
+
+            yield return new object[]
+            {
+                2,
+                new
+                {
+                    Rating = 5,
+                    Message = "Test message"
+                }
+            };
         }
 
         public static IEnumerable<object[]> BadRequestUserRatingTestData()
@@ -53,6 +63,16 @@ namespace Articles.IntegrationTests.Data
                 new
                 {
                     Rating = 2
+                }
+            };
+
+            yield return new object[]
+            {
+                "two",
+                new
+                {
+                    Rating = 2,
+                    Message = 3
                 }
             };
 

@@ -16,5 +16,8 @@ namespace Articles.API.Models
         [Required]
         [Range(1, 5)]
         public int Rating { get; set; }
+
+        [StringLength(255)]
+        public string Message { get; set; }
     }
 }
