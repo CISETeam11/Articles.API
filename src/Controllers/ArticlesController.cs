@@ -46,7 +46,7 @@ namespace Articles.API.Controllers
 
         [HttpPost("{articleId}/userRating")]
         [ProducesResponseType(typeof(UserRating), StatusCodes.Status201Created)]
-        public async Task<IActionResult> PostArticleUserRating([BindRequired] int articleId,
+        public async Task<IActionResult> PostArticleUserRatingAsync([BindRequired] int articleId,
             [FromBody] [BindRequired] UserRating userRating)
         {
             if (!await ArticleExistsAsync(articleId))

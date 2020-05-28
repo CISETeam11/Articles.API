@@ -87,9 +87,11 @@ namespace Articles.IntegrationTests
 
         protected static async Task<HttpResponseMessage> PostAsync(string url, object obj)
         {
+            // Arrange
             var json = JsonConvert.SerializeObject(obj);
             var content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
 
+            // Act
             return await Client.PostAsync(url, content);
         }
     }
