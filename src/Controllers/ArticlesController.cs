@@ -29,9 +29,9 @@ namespace Articles.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Article>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllArticlesAsync()
+        public async Task<IActionResult> GetAllArticlesAsync([FromQuery] ArticleQueryParameter queryParameters)
         {
-            return Ok(await _articleRepository.GetAllAsync());
+            return Ok(await _articleRepository.GetAllAsync(queryParameters));
         }
 
         [HttpGet("{articleId}")]

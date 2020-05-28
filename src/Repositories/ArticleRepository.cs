@@ -36,10 +36,23 @@ namespace Articles.API.Repositories
             return _context.Articles.AsNoTracking().AnyAsync(x => x.ArticleId == articleId);
         }
 
-        public async Task<IEnumerable<Article>> GetAllAsync()
+        public async Task<IEnumerable<Article>> GetAllAsync(ArticleQueryParameter queryParameters)
         {
-            var articles = await _context.Articles.AsNoTracking().Include(a => a.SoftwareEngineeringMethods)
-                .Include(a => a.SoftwareEngineeringMethodologies).Include(a => a.UserRatings).ToListAsync();
+            IQueryable<Article> query = _context.Articles.AsNoTracking().Include(a => a.SoftwareEngineeringMethods)
+                .Include(a => a.SoftwareEngineeringMethodologies).Include(a => a.UserRatings);
+
+            // Bibliography query parameter
+            if (!string.IsNullOrEmpty(queryParameters.Bibliography))
+                query = query.Where(q =>
+                    q.Title.Contains(queryParameters.Bibliography, StringComparison.OrdinalIgnoreCase) ||
+                    q.Author.Contains(queryParameters.Bibliography, StringComparison.OrdinalIgnoreCase));
+
+            // Method query parameter
+            if (!string.IsNullOrEmpty(queryParameters.Method))
+                query = query.Where(q => q.SoftwareEngineeringMethods.Select(x => x.Method.ToLower())
+                    .Contains(queryParameters.Method.ToLower()));
+
+            var articles = await query.ToListAsync();
 
             foreach (var article in articles)
             {
