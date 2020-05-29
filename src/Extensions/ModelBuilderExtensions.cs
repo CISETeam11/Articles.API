@@ -92,6 +92,12 @@ namespace Articles.API.Extensions
                     Id = 3,
                     ArticleId = 1,
                     Rating = 5
+                },
+                new UserRating
+                {
+                    Id = 4,
+                    ArticleId = 1,
+                    Rating = 1
                 }
             );
         }

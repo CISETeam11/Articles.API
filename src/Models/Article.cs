@@ -43,6 +43,6 @@ namespace Articles.API.Models
 
         public double AverageRating { get; set; }
 
-        public int NumberOfRatings { get; set; }
+        public double NumberOfRatings { get; set; }
     }
 }
