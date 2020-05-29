@@ -25,7 +25,7 @@ namespace Articles.API.Repositories
             return _context.Articles.AsNoTracking().AnyAsync(x => x.ArticleId == articleId);
         }
 
-        public async Task<IEnumerable<Article>> GetAllAsync(ArticleQueryParameter queryParameters)
+        public async Task<IEnumerable<Article>> GetAllAsync()
         {
             return await _context.Articles.AsNoTracking().Select(a => new Article
             {
