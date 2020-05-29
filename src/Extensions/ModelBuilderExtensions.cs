@@ -91,7 +91,7 @@ namespace Articles.API.Extensions
                 {
                     Id = 3,
                     ArticleId = 1,
-                    Rating = 2
+                    Rating = 5
                 }
             );
         }
