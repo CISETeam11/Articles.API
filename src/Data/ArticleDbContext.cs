@@ -16,7 +16,7 @@ namespace Articles.API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Seed();
+            //modelBuilder.Seed();
         }
     }
 }

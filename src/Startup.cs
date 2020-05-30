@@ -117,7 +117,7 @@ namespace Articles.API
             {
                 endpoints.MapControllers();
                 endpoints.EnableDependencyInjection();
-                endpoints.Select().Filter().Expand();
+                endpoints.Filter();
                 endpoints.MapODataRoute("odata", "odata", GetEdmModel());
             });
         }

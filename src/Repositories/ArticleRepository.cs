@@ -38,8 +38,10 @@ namespace Articles.API.Repositories
                 Volume = a.Volume,
                 Pages = a.Pages,
                 Doi = a.Doi,
+                SoftwareEngineeringMethods = a.SoftwareEngineeringMethods,
+                SoftwareEngineeringMethodologies = a.SoftwareEngineeringMethodologies,
                 Methods = a.SoftwareEngineeringMethods.Select(method => method.Method),
-                Methodology = a.SoftwareEngineeringMethodologies.Select(methodology => methodology.Methodology),
+                Methodologies = a.SoftwareEngineeringMethodologies.Select(methodology => methodology.Methodology),
                 NumberOfRatings = a.UserRatings.Select(rating => rating.Rating).Count(),
                 AverageRating = Math.Round(a.UserRatings.Select(rating => rating.Rating).DefaultIfEmpty().Average(), 1)
             }).ToListAsync();
@@ -47,9 +49,24 @@ namespace Articles.API.Repositories
 
         public async Task<Article> GetArticleAsync(int articleId)
         {
-            return await _context.Articles.AsNoTracking().Include(a => a.SoftwareEngineeringMethods)
-                .Include(a => a.SoftwareEngineeringMethodologies).Include(a => a.UserRatings)
-                .Where(a => a.ArticleId == articleId).FirstOrDefaultAsync();
+            return await _context.Articles.AsNoTracking().Where(a => a.ArticleId == articleId).Select(a => new Article
+            {
+                ArticleId = a.ArticleId,
+                Author = a.Author,
+                Title = a.Title,
+                Journal = a.Journal,
+                Year = a.Year,
+                JournalIssue = a.JournalIssue,
+                Volume = a.Volume,
+                Pages = a.Pages,
+                Doi = a.Doi,
+                SoftwareEngineeringMethods = a.SoftwareEngineeringMethods,
+                SoftwareEngineeringMethodologies = a.SoftwareEngineeringMethodologies,
+                Methods = a.SoftwareEngineeringMethods.Select(method => method.Method),
+                Methodologies = a.SoftwareEngineeringMethodologies.Select(methodology => methodology.Methodology),
+                NumberOfRatings = a.UserRatings.Select(rating => rating.Rating).Count(),
+                AverageRating = Math.Round(a.UserRatings.Select(rating => rating.Rating).DefaultIfEmpty().Average(), 1)
+            }).FirstOrDefaultAsync();
         }
 
         public async Task AddUserRatingAsync(int articleId, UserRating userRating)

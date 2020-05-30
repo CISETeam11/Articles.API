@@ -27,16 +27,16 @@ namespace Articles.API.Models
         public string Doi { get; set; }
 
         [JsonIgnore]
-        public virtual IEnumerable<SoftwareEngineeringMethod> SoftwareEngineeringMethods { get; set; }
+        public virtual ICollection<SoftwareEngineeringMethod> SoftwareEngineeringMethods { get; set; }
 
         [NotMapped]
         public virtual IEnumerable<string> Methods { get; set; }
 
         [JsonIgnore]
-        public virtual IEnumerable<SoftwareEngineeringMethodology> SoftwareEngineeringMethodologies { get; set; }
+        public virtual ICollection<SoftwareEngineeringMethodology> SoftwareEngineeringMethodologies { get; set; }
 
         [NotMapped]
-        public virtual IEnumerable<string> Methodology { get; set; }
+        public virtual IEnumerable<string> Methodologies { get; set; }
 
         [JsonIgnore]
         public virtual IEnumerable<UserRating> UserRatings { get; set; }
