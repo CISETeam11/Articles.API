@@ -13,6 +13,7 @@ namespace Articles.API.Models
         [JsonIgnore]
         public int ArticleId { get; set; }
 
+        [Required]
         public string Methodology { get; set; }
     }
 }

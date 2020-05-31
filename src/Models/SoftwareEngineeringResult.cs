@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Articles.API.Models
 {
-    public class SoftwareEngineeringMethod
+    public class SoftwareEngineeringResult
     {
         [Key]
         [JsonIgnore]
@@ -15,5 +15,10 @@ namespace Articles.API.Models
 
         [Required]
         public string Method { get; set; }
+
+        public string Methodology { get; set; }
+
+        [Required]
+        public string Result { get; set; }
     }
 }

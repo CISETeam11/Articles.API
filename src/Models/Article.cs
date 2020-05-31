@@ -38,6 +38,8 @@ namespace Articles.API.Models
         [NotMapped]
         public virtual IEnumerable<string> Methodologies { get; set; }
 
+        public virtual ICollection<SoftwareEngineeringResult> Results { get; set; }
+
         [JsonIgnore]
         public virtual IEnumerable<UserRating> UserRatings { get; set; }
 

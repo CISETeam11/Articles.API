@@ -74,6 +74,44 @@ namespace Articles.API.Extensions
                 }
             );
 
+            modelBuilder.Entity<SoftwareEngineeringResult>().HasData(
+                new SoftwareEngineeringResult
+                {
+                    Id = 1,
+                    ArticleId = 1,
+                    Method = "TDD",
+                    Result = "TDD improves code quality measured using a Coupling and Cohesion coefficient calculation"
+                },
+                new SoftwareEngineeringResult
+                {
+                    Id = 2,
+                    ArticleId = 1,
+                    Method = "TDD",
+                    Result = "Test TDD Result 2"
+                },
+                new SoftwareEngineeringResult
+                {
+                    Id = 3,
+                    ArticleId = 1,
+                    Method = "TDD",
+                    Result = "Test TDD Result 3"
+                },
+                new SoftwareEngineeringResult
+                {
+                    Id = 4,
+                    ArticleId = 1,
+                    Method = "Continuous Integration",
+                    Result = "Test Continuous Integration Result 1"
+                },
+                new SoftwareEngineeringResult
+                {
+                    Id = 5,
+                    ArticleId = 2,
+                    Method = "TDD",
+                    Result = "Test TDD Result 1"
+                }
+            );
+
             modelBuilder.Entity<UserRating>().HasData(
                 new UserRating
                 {

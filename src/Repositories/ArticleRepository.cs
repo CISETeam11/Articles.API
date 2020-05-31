@@ -42,6 +42,7 @@ namespace Articles.API.Repositories
                 SoftwareEngineeringMethodologies = a.SoftwareEngineeringMethodologies,
                 Methods = a.SoftwareEngineeringMethods.Select(method => method.Method),
                 Methodologies = a.SoftwareEngineeringMethodologies.Select(methodology => methodology.Methodology),
+                Results = a.Results,
                 NumberOfRatings = a.UserRatings.Select(rating => rating.Rating).Count(),
                 AverageRating = Math.Round(a.UserRatings.Select(rating => rating.Rating).DefaultIfEmpty().Average(), 1)
             }).ToListAsync();
@@ -64,6 +65,7 @@ namespace Articles.API.Repositories
                 SoftwareEngineeringMethodologies = a.SoftwareEngineeringMethodologies,
                 Methods = a.SoftwareEngineeringMethods.Select(method => method.Method),
                 Methodologies = a.SoftwareEngineeringMethodologies.Select(methodology => methodology.Methodology),
+                Results = a.Results,
                 NumberOfRatings = a.UserRatings.Select(rating => rating.Rating).Count(),
                 AverageRating = Math.Round(a.UserRatings.Select(rating => rating.Rating).DefaultIfEmpty().Average(), 1)
             }).FirstOrDefaultAsync();

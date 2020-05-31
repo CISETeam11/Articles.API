@@ -12,11 +12,12 @@ namespace Articles.API.Data
         public DbSet<Article> Articles { get; set; }
         public DbSet<SoftwareEngineeringMethod> Methods { get; set; }
         public DbSet<SoftwareEngineeringMethodology> Methodologies { get; set; }
+        public DbSet<SoftwareEngineeringResult> Results { get; set; }
         public DbSet<UserRating> UserRatings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Seed();
+            modelBuilder.Seed();
         }
     }
 }
