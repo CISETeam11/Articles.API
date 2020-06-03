@@ -20,6 +20,22 @@ namespace Articles.API.Repositories
             _context?.Database.EnsureCreated();
         }
 
+        private static Article IncludeArticleData(Article article)
+        {
+            article.Methods = article.SoftwareEngineeringMethods.Select(x => x.Method).ToList();
+            article.Methodology = article.SoftwareEngineeringMethodologies.Select(x => x.Methodology)
+                .ToList();
+            article.AverageRating = Math.Round(article.UserRatings.Select(x => x.Rating).DefaultIfEmpty(0).Average(), 1);
+            article.NumberOfRatings = article.UserRatings.Count();
+
+            return article;
+        }
+
+        public Task<bool> ExistsAsync(int articleId)
+        {
+            return _context.Articles.AsNoTracking().AnyAsync(x => x.ArticleId == articleId);
+        }
+
         public async Task<IEnumerable<Article>> GetAllAsync()
         {
             var articles = await _context.Articles.AsNoTracking().Include(a => a.SoftwareEngineeringMethods)
@@ -27,14 +43,27 @@ namespace Articles.API.Repositories
 
             foreach (var article in articles)
             {
-                article.Methods = article.SoftwareEngineeringMethods.Select(x => x.Method.ToString()).ToList();
-                article.Methodology = article.SoftwareEngineeringMethodologies.Select(x => x.Methodology.ToString())
-                    .ToList();
-                article.AverageRating = Math.Round(article.UserRatings.Select(x => x.Rating).DefaultIfEmpty(0).Average(), 1);
-                article.NumberOfRatings = article.UserRatings.Count();
+                IncludeArticleData(article);
             }
 
             return articles;
+        }
+
+        public async Task<Article> GetArticleAsync(int articleId)
+        {
+            var article = await _context.Articles.AsNoTracking().Include(a => a.SoftwareEngineeringMethods)
+                .Include(a => a.SoftwareEngineeringMethodologies).Include(a => a.UserRatings).Where(a => a.ArticleId == articleId)
+                .FirstOrDefaultAsync();
+
+            return IncludeArticleData(article);
+        }
+
+        public async Task AddUserRatingAsync(int articleId, UserRating userRating)
+        {
+            userRating.ArticleId = articleId;
+
+            await _context.UserRatings.AddAsync(userRating);
+            await _context.SaveChangesAsync();
         }
     }
 }

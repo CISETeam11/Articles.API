@@ -5,6 +5,7 @@ using Articles.API.Contracts;
 using Articles.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Articles.API.Controllers
 {
@@ -21,12 +22,43 @@ namespace Articles.API.Controllers
             _articleRepository = articleRepository;
         }
 
+        private Task<bool> ArticleExistsAsync(int articleId)
+        {
+            return _articleRepository.ExistsAsync(articleId);
+        }
+
         [HttpGet]
-        [ResponseCache(Duration = 600)]
         [ProducesResponseType(typeof(IEnumerable<Article>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetRoutesAsync()
+        public async Task<IActionResult> GetAllArticlesAsync()
         {
             return Ok(await _articleRepository.GetAllAsync());
+        }
+
+        [HttpGet("{articleId}")]
+        [ProducesResponseType(typeof(Article), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetArticleAsync(int articleId)
+        {
+            if (!await ArticleExistsAsync(articleId))
+                return NotFound();
+
+            return Ok(await _articleRepository.GetArticleAsync(articleId));
+        }
+
+        [HttpPost("{articleId}/userRating")]
+        [ProducesResponseType(typeof(UserRating), StatusCodes.Status201Created)]
+        public async Task<IActionResult> PostArticleUserRatingAsync([BindRequired] int articleId,
+            [FromBody] [BindRequired] UserRating userRating)
+        {
+            if (!await ArticleExistsAsync(articleId))
+                return NotFound();
+
+            await _articleRepository.AddUserRatingAsync(articleId, userRating);
+
+            return CreatedAtAction(
+                nameof(GetArticleAsync),
+                new {articleId},
+                userRating
+            );
         }
     }
 }
