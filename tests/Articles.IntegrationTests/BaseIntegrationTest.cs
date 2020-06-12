@@ -12,7 +12,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Xunit;
 
+[assembly: CollectionBehavior(CollectionBehavior.CollectionPerAssembly)]
 namespace Articles.IntegrationTests
 {
     public class BaseIntegrationTest
@@ -44,37 +46,15 @@ namespace Articles.IntegrationTests
                     using (var scope = serviceProvider.CreateScope())
                     {
                         var scopedServices = scope.ServiceProvider;
-                        var db = scopedServices.GetRequiredService<ArticleDbContext>();
+                        var dbContext = scopedServices.GetRequiredService<ArticleDbContext>();
 
                         // Ensure the database is created.
-                        db.Database.EnsureCreated();
+                        dbContext.Database.EnsureCreated();
 
                         try
                         {
                             // Seed the database with test data
-                            db.Articles.AddRange(new List<Article>
-                            {
-                                new Article { ArticleId = 1 },
-                                new Article { ArticleId = 2 },
-                                new Article { ArticleId = 3 }
-                            });
-
-                            db.Methods.Add(new SoftwareEngineeringMethod
-                            {
-                                Id = 1, ArticleId = 1, Method = "Test"
-                            });
-
-                            db.Methodologies.Add(new SoftwareEngineeringMethodology
-                            {
-                                Id = 1, ArticleId = 1, Methodology = "Test"
-                            });
-
-                            db.UserRatings.Add(new UserRating
-                            {
-                                Id = 1, ArticleId = 1, Rating = 3
-                            });
-
-                            db.SaveChanges();
+                            SeedData(dbContext);
                         }
                         catch (Exception)
                         {
@@ -83,6 +63,116 @@ namespace Articles.IntegrationTests
                     }
                 });
             }).CreateClient();
+        }
+
+        private static void SeedData(ArticleDbContext dbContext)
+        {
+            dbContext.Articles.AddRange(new List<Article>
+            {
+                new Article
+                {
+                    ArticleId = 1,
+                    Author = "Per Runeson, Martin Höst",
+                    Title = "Guidelines for conducting and reporting case study research in software engineering",
+                    Journal = "Empirical Software Engineering",
+                    Year = 2008,
+                    Volume = 14,
+                    JournalIssue = 2,
+                    Pages = "131-164",
+                    Doi = "10.1007/s10664-008-9102-8"
+                },
+                new Article
+                {
+                    ArticleId = 2,
+                    Author = "Mauricio Aniche, Marco Gerosa",
+                    Title = "Most Common Mistakes in Test-Driven Development Practice: Results from an Online Survey with Developers",
+                    Journal = "ieeexplore.ieee.org",
+                    Year = 2010,
+                    Pages = "469-478",
+                    Doi = "10.1109/ICSTW.2010.16"
+                }
+            });
+
+            dbContext.Methods.AddRange(
+                new SoftwareEngineeringMethod
+                {
+                    Id = 1,
+                    ArticleId = 1,
+                    Method = "TDD"
+                },
+                new SoftwareEngineeringMethod
+                {
+                    Id = 2,
+                    ArticleId = 1,
+                    Method = "Continuous Integration"
+                },
+                new SoftwareEngineeringMethod
+                {
+                    Id = 3,
+                    ArticleId = 2,
+                    Method = "TDD"
+                }
+            );
+
+            dbContext.Methodologies.AddRange(
+                new SoftwareEngineeringMethodology
+                {
+                    Id = 1,
+                    ArticleId = 1,
+                    Methodology = "Agile"
+                },
+                new SoftwareEngineeringMethodology
+                {
+                    Id = 2,
+                    ArticleId = 1,
+                    Methodology = "XP"
+                },
+                new SoftwareEngineeringMethodology
+                {
+                    Id = 3,
+                    ArticleId = 2,
+                    Methodology = "Agile"
+                }
+            );
+
+            dbContext.UserRatings.AddRange(
+                new UserRating
+                {
+                    Id = 1,
+                    ArticleId = 1,
+                    Rating = 3
+                },
+                new UserRating
+                {
+                    Id = 2,
+                    ArticleId = 1,
+                    Rating = 2
+                },
+                new UserRating
+                {
+                    Id = 3,
+                    ArticleId = 1,
+                    Rating = 5
+                },
+                new UserRating
+                {
+                    Id = 4,
+                    ArticleId = 1,
+                    Rating = 1
+                }
+            );
+
+            dbContext.SaveChanges();
+        }
+
+        protected static async Task<HttpResponseMessage> GetAsync(string endpoint)
+        {
+            return await Client.GetAsync(endpoint);
+        }
+
+        protected static async Task<string> GetStringAsync(string endpoint)
+        {
+            return await Client.GetStringAsync(endpoint);
         }
 
         protected static async Task<HttpResponseMessage> PostAsync(string url, object obj)

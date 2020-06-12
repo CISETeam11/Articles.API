@@ -3,6 +3,7 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 using Articles.API.Contracts;
 using Articles.API.Models;
+using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -28,6 +29,7 @@ namespace Articles.API.Controllers
         }
 
         [HttpGet]
+        [EnableQuery]
         [ProducesResponseType(typeof(IEnumerable<Article>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllArticlesAsync()
         {

@@ -20,17 +20,6 @@ namespace Articles.API.Repositories
             _context?.Database.EnsureCreated();
         }
 
-        private static Article IncludeArticleData(Article article)
-        {
-            article.Methods = article.SoftwareEngineeringMethods.Select(x => x.Method).ToList();
-            article.Methodology = article.SoftwareEngineeringMethodologies.Select(x => x.Methodology)
-                .ToList();
-            article.AverageRating = Math.Round(article.UserRatings.Select(x => x.Rating).DefaultIfEmpty(0).Average(), 1);
-            article.NumberOfRatings = article.UserRatings.Count();
-
-            return article;
-        }
-
         public Task<bool> ExistsAsync(int articleId)
         {
             return _context.Articles.AsNoTracking().AnyAsync(x => x.ArticleId == articleId);
@@ -38,24 +27,48 @@ namespace Articles.API.Repositories
 
         public async Task<IEnumerable<Article>> GetAllAsync()
         {
-            var articles = await _context.Articles.AsNoTracking().Include(a => a.SoftwareEngineeringMethods)
-                .Include(a => a.SoftwareEngineeringMethodologies).Include(a => a.UserRatings).ToListAsync();
-
-            foreach (var article in articles)
+            return await _context.Articles.AsNoTracking().Select(a => new Article
             {
-                IncludeArticleData(article);
-            }
-
-            return articles;
+                ArticleId = a.ArticleId,
+                Author = a.Author,
+                Title = a.Title,
+                Journal = a.Journal,
+                Year = a.Year,
+                JournalIssue = a.JournalIssue,
+                Volume = a.Volume,
+                Pages = a.Pages,
+                Doi = a.Doi,
+                SoftwareEngineeringMethods = a.SoftwareEngineeringMethods,
+                SoftwareEngineeringMethodologies = a.SoftwareEngineeringMethodologies,
+                Methods = a.SoftwareEngineeringMethods.Select(method => method.Method),
+                Methodologies = a.SoftwareEngineeringMethodologies.Select(methodology => methodology.Methodology),
+                Results = a.Results,
+                NumberOfRatings = a.UserRatings.Select(rating => rating.Rating).Count(),
+                AverageRating = Math.Round(a.UserRatings.Select(rating => rating.Rating).DefaultIfEmpty().Average(), 1)
+            }).ToListAsync();
         }
 
         public async Task<Article> GetArticleAsync(int articleId)
         {
-            var article = await _context.Articles.AsNoTracking().Include(a => a.SoftwareEngineeringMethods)
-                .Include(a => a.SoftwareEngineeringMethodologies).Include(a => a.UserRatings).Where(a => a.ArticleId == articleId)
-                .FirstOrDefaultAsync();
-
-            return IncludeArticleData(article);
+            return await _context.Articles.AsNoTracking().Where(a => a.ArticleId == articleId).Select(a => new Article
+            {
+                ArticleId = a.ArticleId,
+                Author = a.Author,
+                Title = a.Title,
+                Journal = a.Journal,
+                Year = a.Year,
+                JournalIssue = a.JournalIssue,
+                Volume = a.Volume,
+                Pages = a.Pages,
+                Doi = a.Doi,
+                SoftwareEngineeringMethods = a.SoftwareEngineeringMethods,
+                SoftwareEngineeringMethodologies = a.SoftwareEngineeringMethodologies,
+                Methods = a.SoftwareEngineeringMethods.Select(method => method.Method),
+                Methodologies = a.SoftwareEngineeringMethodologies.Select(methodology => methodology.Methodology),
+                Results = a.Results,
+                NumberOfRatings = a.UserRatings.Select(rating => rating.Rating).Count(),
+                AverageRating = Math.Round(a.UserRatings.Select(rating => rating.Rating).DefaultIfEmpty().Average(), 1)
+            }).FirstOrDefaultAsync();
         }
 
         public async Task AddUserRatingAsync(int articleId, UserRating userRating)

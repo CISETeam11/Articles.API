@@ -1,15 +1,22 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Articles.API.Contracts;
 using Articles.API.Data;
+using Articles.API.Models;
 using Articles.API.Repositories;
+using Microsoft.AspNet.OData.Builder;
+using Microsoft.AspNet.OData.Extensions;
+using Microsoft.AspNet.OData.Formatter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Net.Http.Headers;
+using Microsoft.OData.Edm;
 using Microsoft.OpenApi.Models;
 
 namespace Articles.API
@@ -33,7 +40,7 @@ namespace Articles.API
                 options.UseInMemoryDatabase("Development");
             });
 
-            services.AddResponseCaching();
+            services.AddOData();
 
             services.AddControllers(options =>
             {
@@ -64,6 +71,18 @@ namespace Articles.API
             {
                 options.LowercaseUrls = true;
             });
+
+            services.AddMvcCore(options =>
+            {
+                foreach (var outputFormatter in options.OutputFormatters.OfType<ODataOutputFormatter>().Where(_ => _.SupportedMediaTypes.Count == 0))
+                {
+                    outputFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/prs.odatatestxx-odata"));
+                }
+                foreach (var inputFormatter in options.InputFormatters.OfType<ODataInputFormatter>().Where(_ => _.SupportedMediaTypes.Count == 0))
+                {
+                    inputFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/prs.odatatestxx-odata"));
+                }
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,14 +111,23 @@ namespace Articles.API
 
             app.UseRouting();
 
-            app.UseResponseCaching();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.EnableDependencyInjection();
+                endpoints.Filter();
+                endpoints.MapODataRoute("odata", "odata", GetEdmModel());
             });
+        }
+
+        private static IEdmModel GetEdmModel()
+        {
+            var odataBuilder = new ODataConventionModelBuilder();
+            odataBuilder.EntitySet<Article>("Articles");
+
+            return odataBuilder.GetEdmModel();
         }
     }
 }
